@@ -4,25 +4,42 @@
     <%= submit_tag "Import CSV" %>
   <% end %>
 
-  <table class="table table-bordered">
+  <table class="table table-bordered table-responsive">
   <thead>
     <tr>
       <th scope="col">Project Title</th>
       <th scope="col">Applicant</th>
       <th scope="col">Institution</th>
       <th scope="col">Funding</th>
-      <th scope="col">Date Range</th>
+      <th scope="col">Project Duration</th>
+      <th>
+          Website
+      </th>
     </tr>
   </thead>
   <tbody>
     <% unless @file.nil? %>
       <% CSV.foreach(@file.path, headers: true) do |row| %>
       <tr>
-        <% row.each do |element| %>
         <td>
-          <%= element[1] %>
+          <%= row["Project Title"] %>
         </td>
-        <% end %>
+        <td>
+          <%= row["Responsible Applicant"] %>
+        </td>
+        <td>
+          <%= row["University"] %>
+        </td>
+        <td>
+          <%= row["Funding Instrument"] %>
+        </td>
+        <td>
+          <%= Date.strptime(row["Start Date"], "%d.%m.%y").year %> - <%= Date.strptime(row["End Date"], "%d.%m.%y").year %>
+        </td>
+        <td>
+          <% url = "http://p3.snf.ch/Project-" + row["Project Number"] %>
+          <%= link_to url, url %>
+        </td>
       </tr>
 
       <% end %>

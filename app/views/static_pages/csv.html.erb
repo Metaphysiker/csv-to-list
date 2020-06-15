@@ -1,0 +1,31 @@
+<h1>Import</h1>
+  <%= form_tag(csv_path, :multipart => true) do %>
+    <%= file_field_tag :file %>
+    <%= submit_tag "Import CSV" %>
+  <% end %>
+
+  <table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Project Title</th>
+      <th scope="col">Applicant</th>
+      <th scope="col">Institution</th>
+      <th scope="col">Funding</th>
+      <th scope="col">Date Range</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% unless @file.nil? %>
+      <% CSV.foreach(@file.path, headers: true) do |row| %>
+      <tr>
+        <% row.each do |element| %>
+        <td>
+          <%= element[1] %>
+        </td>
+        <% end %>
+      </tr>
+
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
